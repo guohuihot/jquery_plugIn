@@ -1,0 +1,182 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>jqduang_jqvalidate_jqmodal_jqgallery_jqfixed_jqsimulation-jqduang.com</title>
+	<meta name="keywords" content="jqduang,jqvalidate,jqmodal,jqgallery,jqfixed,jqsimulation,前端特效,网页特效,焦点图,幻灯片,滑动门,滚动图片,无缝滚动,图片切换,表单验证,弹出层,对话框,模拟下拉列表,模拟单选框"/>
+	<meta name="description" content="Mr.jqDuang,前端特效,网页特效,焦点图,幻灯片,滑动门,滚动图片,无缝滚动,图片切换,表单验证,弹出层,对话框,模拟下拉列表,模拟单选框,用少的代码做多的效果,复杂的问题交给我来做,您只要轻轻一行代码就行！"/>
+	<link rel="stylesheet" href="css/global.css">
+</head>
+<body class="bg">
+	<nav class="nav">
+		<ul class="wrap cf">
+			<li><a class="act" title="jqDuang"><span>首页</span></a></li>
+			<li><a href="jqduang/" title="网页特效"><span>jqDuang</span></a></li>
+			<li><a href="jqvalidate/" title="表单验证"><span>jqValidate</span></a></li>
+			<li><a href="jqmodal/" title="弹出层"><span>jqModal</span></a></li>
+			<li><a href="jqgallery/" title="图片相册"><span>jqGallery</span></a></li>
+			<li><a href="jqfixed/" title="jqfixed"><span>jqFixed</span></a></li>
+			<li><a href="jqSimulation/" title="模拟select"><span>jqSimulation</span></a></li>
+			<li><a href="aboutus/" title="关于我们"><span>关于jqDuang</span></a></li>
+		</ul>
+	</nav><!-- /nav -->
+	<div class="wrap">
+		<section class="area">
+			<div class="effect-wrap w50p">
+				<iframe width="560" height="336" name="demo1" frameborder="0" scrolling="no"></iframe>
+			</div>
+			<div class="config-wrap w50p">
+				<h2>配置选项</h2>
+				<!-- 表单 -->
+				<form action="jqduang/demo1.html" method="get" target="demo1">
+						<input type="hidden" name="cell" value=".thumb"/>
+						<input type="hidden" name="obj" value="li"/>
+						<input type="hidden" name="prevbtn" value=".prev"/>
+						<input type="hidden" name="nextbtn" value=".next"/>
+						<ul>
+							<li>
+								<label>切换效果(effect)</label>：
+								<select name="effect">
+									<option data-tipinfo="淡进淡出" value="fade">fade</option>	
+									<option data-tipinfo="褶皱效果" value="fold">fold</option>	
+									<option data-tipinfo="左滚动" value="left">left</option>	
+									<option data-tipinfo="左循环滚动" value="leftLoop">leftLoop</option>	
+									<option data-tipinfo="左滚动" value="top">top</option>	
+									<option data-tipinfo="右循环滚动" value="topLoop">topLoop</option>	
+								</select>
+							</li>
+							<li>
+								<label>切换速度(speed)</label>：
+								<select name="speed">
+									<option value="100">100ms</option>	
+									<option value="200">200ms</option>	
+									<option selected="selected" value="300">300ms</option>	
+									<option value="400">400ms</option>	
+									<option value="500">500ms</option>	
+								</select>
+							</li>
+							<li>
+								<label>自动切换(autoplay)</label>：
+								<select name="autoplay">
+									<option value="1">是</option>	
+									<option value="0">否</option>		
+								</select>
+							</li>
+							<li>
+								<label>触发方式(trigger)</label>：
+								<select name="trigger">
+									<option data-tipinfo="鼠标悬停切换" value="mouseover">mouseover</option>	
+									<option data-tipinfo="鼠标点击切换" value="click">click</option>	
+								</select>
+							</li>
+							<li>
+								<label>显示标题(showtit)</label>：
+								<select name="showtit">
+									<option value="1">是</option>	
+									<option value="0">否</option>	
+								</select>
+							</li>
+							<li>
+								<label>切换间隔时间(interval)</label>：
+								<select name="interval">
+									<option value="2000">2000ms</option>	
+									<option selected="selected" value="3000">3000ms</option>	
+									<option value="4000">4000ms</option>	
+									<option value="5000">5000ms</option>
+								</select>
+							</li>
+							<li>
+								<label>鼠标悬停(overstop)</label>：
+								<select name="overstop">
+									<option data-tipinfo="鼠标悬停停止切换" value="1">是</option>
+									<option data-tipinfo="鼠标悬停继续切换" value="0">否</option>
+								</select>
+							</li>
+							<li>
+								<label>初始值(index)</label>：
+								<select name="index">
+									<option data-tipinfo="初始值0,从0开始" value="0">0</option>
+									<option data-tipinfo="初始值1,从0开始" value="1">1</option>
+									<option data-tipinfo="初始值2,从0开始" value="2">2</option>
+									<option data-tipinfo="初始值3,从0开始" value="3">3</option>
+								</select>
+							</li>
+						</ul>
+						<input type="submit" class="btn dn" value="提交"/>
+					</form>
+				
+				<!-- /表单 -->
+			</div>
+			
+		</section>
+		<section class="area">
+		<div class="effect-wrap w50p">
+			<iframe width="96%" height="230" name="register" frameborder="0" scrolling="no"></iframe>
+		</div>
+		<div class="config-wrap w50p">
+			<h2>配置选项</h2>
+			<!-- 表单 -->
+			<form action="jqvalidate/register.html" method="get" target="register">
+					<ul>
+						<li>
+							<label>验证方式(vadmode)</label>
+							<select name="vadmode">
+								<option data-tipinfo="当input,seclect,textarea失去焦点时验证" value="0">0=失焦验证</option>	
+								<option data-tipinfo="提交表单是逐个验证并提示，默认为批量验证" value="1">1=逐个验证</option>
+								<option data-tipinfo="当input,textarea输入内容时直接验证" value="2">2=实时验证</option>
+							</select>
+						</li>
+						<li>
+							<label>提交按钮(submit)</label>
+							<select name="submit">
+								<option data-tipinfo="点击“.button1”按钮时提交表单，默认为type='submit'的按钮" value=".button1">.button1</option>	
+								<option data-tipinfo="点击“.button2”按钮时提交表单，默认为type='submit'的按钮" value=".button2">.button2</option>	
+							</select>
+						</li>
+						<li class="nowrap">
+							<label>提示方式(tipmode)</label>
+							<select name="tipmode">
+								<option data-tipinfo="初始化时不显示提示信息" value="">0=不显示</option>	
+								<option data-tipinfo="初始化时显示提示信息" value="1">1=直接显示</option>	
+								<option data-tipinfo="当input,seclect,textarea聚焦时显示提示信息" value="2">2=聚焦时显示</option>
+								<option data-tipinfo="将提示信息显示在一个指定的标签里" value=".s-tip">.s-tip=指定标签</option>	
+							</select>
+						</li>
+						<li class="nowrap">
+							<label>提示框模板(tipTpl)</label>
+							<select name="tipTpl">
+								<option data-tipinfo="$1表示内容" value='$1'>默认</option>	
+								<option data-tipinfo="<i>$1</i>替换为‘<i>内容</i>’" value='<i>$1</i>'>&lt;i&gt;$1&lt;/i&gt;</option>
+							</select>
+						</li>
+					</ul>
+					<input type="submit" class="btn dn" value="提交"/>
+				</form>
+			
+			<!-- /表单 -->
+		</div>
+		
+	</section>
+	</div>
+	<div class="footer tac">	    
+	    jqDuang, jqValidate, jqModal, jqGallery, jqFixed, jqSimulation <br/>
+	    Copyright ©2013 jqduang.com
+	</div><!-- /footer -->
+	
+	<script src="js/jquery.js"></script>
+	
+<script src="js/common.js?201505203"></script>
+	<div class="dn">
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?b2e33c0312c7235a7e13b0cf86eec840";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+	</div>
+	
+</body>
+</html>

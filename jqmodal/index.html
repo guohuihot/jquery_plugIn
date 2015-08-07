@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>jqmodal_弹出层_登录框_jq对话框_jqduang.com</title>
+	<meta name="keywords" content="jqmodal_弹出层_登录框_jq对话框"/>
+	<meta name="description" content="Mr.jqDuang,前端特效,用少的代码做多的效果,复杂的问题交给我来做,您只要轻轻一行代码就行！"/>
+	<link rel="stylesheet" href="../css/global.css">
+	<style type="text/css">
+	.btn-jqModal {padding: 5px 10px;}
+	.jqModal input {padding: 5px;margin-bottom: 10px;}
+	</style>
+</head>
+<body>
+<div class="blank20"></div>
+<div class="wrap">
+	<nav class="sub-nav cf">
+        <ul>
+            <li><a class="act" href="#demo">Demo</a></li>
+            <li><a href="#howtouse">如何使用</a></li>
+            <li><a href="#param">插件参数</a></li>
+            <li><a href="#download">下载插件</a></li>
+            <li><a href="#question">常见问题</a></li>
+            <li><a href="#commus">一起交流</a></li>
+        </ul>
+    </nav>
+	<section id="demo" class="page active">
+        <article class="area">
+            <div id="pop" style="display:none;">
+            	<!-- 表单 -->
+            	<form action="###" target="_blank">
+            		<input type="text" class="txt" placeholder="" value=""/><br/>
+            		<input type="text" class="txt" placeholder="" value=""/><br/>
+            		<input type="text" class="txt" placeholder="" value=""/><br/>
+            		<input type="button" class="btn" value="submit"/>
+            	</form>
+            	<!-- /表单 -->
+            </div>
+            <div class="config-wrap cf">
+                <h2 class="p10">jqModal参数</h2>
+                <!-- 表单 -->
+                <form action="demo1.html" method="get" class="nosubmit" target="#pop">
+                    <ul>
+                        <li>
+                            <label>切换效果(animate)</label>：
+                            <select name="animate">
+                                <option value="bounceInDown">bounceInDown</option>   
+                                <option value="shake">shake</option>  
+                                <option value="flipInY">flipInY</option>  
+                                <option value="zoomIn">zoomIn</option> 
+                            </select>
+                        </li>
+                        <li>
+                            <label>打开一个地址(remote)</label>：
+                            <select name="remote">
+                                <option value="">默认</option>   
+                                <option value="http://www.jqduang.com/jqduang/demo1.html?cell=.thumb&obj=li&prevbtn=.prev&nextbtn=.next">幻灯片</option>   
+                            </select>
+                        </li>
+                        <li>
+                            <label>遮罩层(overlay)</label>：
+                            <select name="overlay">
+                                <option value="0">0</option>  
+                                <option selected="selected" value="0.3">0.3</option>  
+                                <option value="0.5">0.5</option>  
+                                <option value="0.8">0.8</option>  
+                            </select>
+                        </li>
+                        <li>
+                            <label>锁定遮罩层(lock)</label>：
+                            <select name="lock">
+                                <option value="0">0</option>  
+                                <option value="1">1</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>拖拽(drag)</label>：
+                            <select name="drag">
+                                <option value="0">0</option>  
+                                <option value="1">1</option>  
+                            </select>
+                        </li>
+                        <li>
+                            <label>fixed(fixed)</label>：
+                            <select name="fixed">
+                                <option value="1">1</option>  
+                                <option value="0">0</option>  
+                            </select>
+                        </li>
+                        <li>
+                            <label>自动关闭时间(timeout)</label>：
+                            <select name="timeout">
+                                <option value="">不自动关闭</option>  
+                                <option value="1000">1000</option>  
+                                <option value="3000">3000</option>  
+                                <option value="5000">5000</option>  
+                                <option value="8000">8000</option>  
+                                <option value="10000">10000</option>  
+                            </select>
+                        </li>
+                        <li>
+                            <label>弹窗样式(css)</label>：
+                            <select name="css">
+                                <option value='{"width":"400"}'>{"width":"400"}</option>    
+                                <option value='{"left":"0","top":"0","width":"400"}'>{"left":"0","top":"0","width":"400"}左上</option>    
+                                <option value='{"left":"0","bottom":"0","width":"400"}'>{"left":"0","bottom":"0","width":"400"}左下</option>    
+                                <option value='{"right":"0","top":"0","width":"400"}'>{"right":"0","top":"0","width":"400"}右上</option>    
+                                <option value='{"right":"0","bottom":"0","width":"400"}'>{"right":"0","bottom":"0","width":"400"}右下</option>    
+                            </select>
+                        </li>
+                        <li>
+                            <label>头部(head)</label>：
+                            <select name="head">
+                                <option value="会员登录">会员登录</option>  
+                                <option value="<div style='color:#f00'>会员登录</div>">&lt;div style='color:#f00'&gt;会员登录&lt;/div&gt;</option>  
+                            </select>
+                        </li>
+                        <li>
+                            <label>头部样式(headcss)</label>：
+                            <select name="headcss">
+                                <option value='{}'>默认</option>    
+                                <option value='{"height":"40"}'>{"height":"40"}</option>    
+                                <option value='{"background":"#749FB2"}'>{"background":"#749FB2"}</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>中间样式(bodycss)</label>：
+                            <select name="bodycss">
+                                <option value='{}'>默认</option>    
+                                <option value='{"background":"#749FB2"}'>{"background":"#749FB2"}</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>底部(foot)</label>：
+                            <select name="foot">
+                                <option value="">不要底部</option>
+                                <option value="这里是底部" selected="selected">这里是底部</option>
+                                <option value="<button>确定</button>">&lt;button&gt;确定&lt;/button&gt;</option>        
+                                <option value="<button data-close='1'>关闭</button>">&lt;button data-close='1'&gt;关闭&lt;/button&gt;</option>        
+                            </select>
+                        </li>
+                        <li>
+                            <label>底部样式(footcss)</label>：
+                            <select name="footcss">
+                                <option value='{}'>默认</option>    
+                                <option value='{"background":"#749FB2"}'>{"background":"#749FB2"}</option>
+                            </select>
+                        </li>
+                    </ul>
+                    <input type="submit" class="btn dn" value="提交"/>
+                </form>
+            </div>
+        </article>
+    </section>
+    <section id="download" class="page">
+        <article class="area">
+            <!-- <h2>下载插件</h2> -->
+            <div class="">
+                压缩版本 <a href="http://www.jqduang.com/jqmodal/js/jqmodal.js" target="_blank">jqmodal.js</a> (7.30k)
+            </div>
+        </article>
+    </section>
+    <section id="question" class="page">
+        <article class="area">
+            <!-- <h2>常见问题</h2> -->
+            常见问题 
+        </article>
+    </section>
+    <section id="commus" class="page">
+        <div class="blank0"></div>
+    </section>
+    
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/jqmodal.dev.js"></script>
+<script src="../js/common.js?201505203"></script>
+<script src="../js/rainbow.min.js?201505203"></script>
+
+<section class="wrap">
+	<div class="p10">
+		<script type="text/javascript">
+            var uyan_config = {
+                 'title':'jqmodal'
+                , 'url':'http://www.jqduang.com/jqmodal'
+                , 'du':'jqduang.com'
+                , 'su':'jqmodal' 
+            };
+        </script>
+		<!-- UY BEGIN -->
+		<div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2026484"></script>
+		<!-- UY END -->
+	</div><!-- /留言 -->
+</section> 
+
+<div class="footer tac">	    
+    jqDuang, jqValidate, jqModal, jqGallery, jqFixed, jqSimulation <br/>
+    Copyright ©2013 jqduang.com
+</div><!-- /footer -->
+<div class="dn">
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?b2e33c0312c7235a7e13b0cf86eec840";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</div>
+</body>
+</html>

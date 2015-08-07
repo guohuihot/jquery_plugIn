@@ -1,0 +1,240 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>jqfixed_qq客服_客服代码_在线客服_悬浮框_jqduang.com</title>
+	<meta name="keywords" content="qfixed_qq客服_客服代码_在线客服_悬浮框"/>
+	<meta name="description" content="Mr.jqDuang,前端特效,用少的代码做多的效果,复杂的问题交给我来做,您只要轻轻一行代码就行！"/>
+	<link rel="stylesheet" href="../css/global.css">
+<!--演示内容开始-->
+<style type="text/css">
+.fixediv{z-index:9999;width:100px;height:330px;background:#ddd;}
+.con{height:300px; }
+.close{display:block;height:30px;line-height:30px;background:#eee;font-size:14px;padding:0 10px;color:#5e5e5e;text-decoration:none;text-align:center;}
+</style>
+</head>
+<body>
+	<div class="blank20"></div>
+<div class="wrap">
+ <div style="padding:10px">最近一直在研究mysql的主从同步问题，网上也有很多资料，现在感觉写的都很好(当初感觉写的很差，是因为自己的领悟较差)，于是想跟大家分享一下我配置的整个过程和经验。
+
+在这里先引入一篇文章，感觉写的很好，但对于第一次接触mysql主从同步人来说或许有点难理解：
+
+呵呵，其实我也算是第一次接触吧。
+
+环境：windows 7 ，mysql-5.5.18-win32.msi
+
+主服务器地址：192.168.1.192
+
+从数据库地址：192.168.1.193
+
+流程：
+
+1：在mysql下找到my.ini文件，在其[mysqld] 下添加主服务器端配置：
+
+server-id=1    #服务器 id 
+log-bin=C:\Program Files\MySQL\MySQL Server 5.5\mysql-bin    #二进制文件存放路径
+binlog-do-db=test1    #待同步的数据库
+binlog-ignore-db=information_schema   #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=mysql    #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=test    #忽略不同步的数据库，这个可以不用写
+
+2：保存my.ini文件，重启数据库，然后会在C:\Program Files\MySQL\MySQL Server 5.5 下看到mysql-bin.index 文件和mysql-bin.000001文件；
+
+3：通过cmd进入mysql：cd C:\Program Files\MySQL\MySQL Server 5.5\bin
+
+输入用户名和密码：mysql -u用户名 -p密码 (    mysql -uroot -proot   )
+
+4：给要连接的从服务器设置权限：grant replication slave,reload,super on *.* toslave@192.168.1.193 identified by '123456';     ps： 给主机192.168.1.193添加权限，用户名：slave，密码：123456；（只需输入一次就可以了）
+
+5：输入命令 show master status;       # 找到File 和 Position 的值记录下来；
+
+其实，主服务器是不需要设置太多信息的，只需要第1条中的前三行就足够了。
+
+下面配置从服务器：
+
+1：在mysql下找到my.ini文件，在其[mysqld] 下添加从服务器端配置：
+
+server-id=2    #服务器 id ，不能和主服务器一致
+replicate-do-db=test1    #待同步的数据库
+binlog-ignore-db=information_schema   #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=mysql    #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=mysql    #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=test    #忽略不同步的数据库，这个可以不用写
+
+2：保存my.ini文件，重启从数据库，在mysql5.1以上版本中是不支持1中master设置的，如果添加了master设置，数据库就无法重启了；
+
+3：通过cmd进入mysql：cd C:\Program Files\MySQL\MySQL Server 5.5\bin
+
+4：从服务器上测试：mysql -u slave -p 123456 -h 192.168.1.192，查看能否连接主数据库成功，如果成功，则一定要退出来，之前我就是一直犯了一个错误，按照网上的步骤测试完毕之后就没有退出mysql，结果执行以下步骤时老是报错，其原因是一直设置的是主数据库；
+
+5：修改对主数据库的连接的参数：mysql>change master to master_host='192.168.1.193',master_user='slave2',master_password='1234562', master_log_file='mysql-bin.000001',master_log_pos=107;  ps：可能会报一个错误，大概的意思是说slave线程正在运行，不能设置，这样的话，执行mysql>stop slave; 停止slave线程，然后再设置连接的参数；
+
+6：设置完之后，执行 mysql> start slave; 开启slave线程；执行mysql> show slave status\G   (没有分号)，查看
+Slave_IO_Running: Yes
+Slave_SQL_Running: Ye最近一直在研究mysql的主从同步问题，网上也有很多资料，现在感觉写的都很好(当初感觉写的很差，是因为自己的领悟较差)，于是想跟大家分享一下我配置的整个过程和经验。
+
+在这里先引入一篇文章，感觉写的很好，但对于第一次接触mysql主从同步人来说或许有点难理解：
+
+呵呵，其实我也算是第一次接触吧。
+
+环境：windows 7 ，mysql-5.5.18-win32.msi
+
+主服务器地址：192.168.1.192
+
+从数据库地址：192.168.1.193
+
+流程：
+
+1：在mysql下找到my.ini文件，在其[mysqld] 下添加主服务器端配置：
+
+server-id=1    #服务器 id 
+log-bin=C:\Program Files\MySQL\MySQL Server 5.5\mysql-bin    #二进制文件存放路径
+binlog-do-db=test1    #待同步的数据库
+binlog-ignore-db=information_schema   #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=mysql    #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=test    #忽略不同步的数据库，这个可以不用写
+
+2：保存my.ini文件，重启数据库，然后会在C:\Program Files\MySQL\MySQL Server 5.5 下看到mysql-bin.index 文件和mysql-bin.000001文件；
+
+3：通过cmd进入mysql：cd C:\Program Files\MySQL\MySQL Server 5.5\bin
+
+输入用户名和密码：mysql -u用户名 -p密码 (    mysql -uroot -proot   )
+
+4：给要连接的从服务器设置权限：grant replication slave,reload,super on *.* toslave@192.168.1.193 identified by '123456';     ps： 给主机192.168.1.193添加权限，用户名：slave，密码：123456；（只需输入一次就可以了）
+
+5：输入命令 show master status;       # 找到File 和 Position 的值记录下来；
+
+其实，主服务器是不需要设置太多信息的，只需要第1条中的前三行就足够了。
+
+下面配置从服务器：
+
+1：在mysql下找到my.ini文件，在其[mysqld] 下添加从服务器端配置：
+
+server-id=2    #服务器 id ，不能和主服务器一致
+replicate-do-db=test1    #待同步的数据库
+binlog-ignore-db=information_schema   #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=mysql    #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=mysql    #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=test    #忽略不同步的数据库，这个可以不用写
+
+2：保存my.ini文件，重启从数据库，在mysql5.1以上版本中是不支持1中master设置的，如果添加了master设置，数据库就无法重启了；
+
+3：通过cmd进入mysql：cd C:\Program Files\MySQL\MySQL Server 5.5\bin
+
+4：从服务器上测试：mysql -u slave -p 123456 -h 192.168.1.192，查看能否连接主数据库成功，如果成功，则一定要退出来，之前我就是一直犯了一个错误，按照网上的步骤测试完毕之后就没有退出mysql，结果执行以下步骤时老是报错，其原因是一直设置的是主数据库；
+
+5：修改对主数据库的连接的参数：mysql>change master to master_host='192.168.1.193',master_user='slave2',master_password='1234562', master_log_file='mysql-bin.000001',master_log_pos=107;  ps：可能会报一个错误，大概的意思是说slave线程正在运行，不能设置，这样的话，执行mysql>stop slave; 停止slave线程，然后再设置连接的参数；
+
+6：设置完之后，执行 mysql> start slave; 开启slave线程；执行mysql> show slave status\G   (没有分号)，查看
+Slave_IO_Running: Yes
+Slave_SQL_Running: Ye最近一直在研究mysql的主从同步问题，网上也有很多资料，现在感觉写的都很好(当初感觉写的很差，是因为自己的领悟较差)，于是想跟大家分享一下我配置的整个过程和经验。
+
+在这里先引入一篇文章，感觉写的很好，但对于第一次接触mysql主从同步人来说或许有点难理解：
+
+呵呵，其实我也算是第一次接触吧。
+
+环境：windows 7 ，mysql-5.5.18-win32.msi
+
+主服务器地址：192.168.1.192
+
+从数据库地址：192.168.1.193
+
+流程：
+
+1：在mysql下找到my.ini文件，在其[mysqld] 下添加从服务器端配置：
+
+server-id=2    #服务器 id ，不能和主服务器一致
+replicate-do-db=test1    #待同步的数据库
+binlog-ignore-db=information_schema   #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=mysql    #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=mysql    #忽略不同步的数据库，这个可以不用写
+binlog-ignore-db=test    #忽略不同步的数据库，这个可以不用写
+
+2：保存my.ini文件，重启从数据库，在mysql5.1以上版本中是不支持1中master设置的，如果添加了master设置，数据库就无法重启了；
+
+3：通过cmd进入mysql：cd C:\Program Files\MySQL\MySQL Server 5.5\bin
+
+4：从服务器上测试：mysql -u slave -p 123456 -h 192.168.1.192，查看能否连接主数据库成功，如果成功，则一定要退出来，之前我就是一直犯了一个错误，按照网上的步骤测试完毕之后就没有退出mysql，结果执行以下步骤时老是报错，其原因是一直设置的是主数据库；
+
+5：修改对主数据库的连接的参数：mysql>change master to master_host='192.168.1.193',master_user='slave2',master_password='1234562', master_log_file='mysql-bin.000001',master_log_pos=107;  ps：可能会报一个错误，大概的意思是说slave线程正在运行，不能设置，这样的话，执行mysql>stop slave; 停止slave线程，然后再设置连接的参数；
+
+6：设置完之后，执行 mysql> start slave; 开启slave线程；执行mysql> show slave status\G   (没有分号)，查看
+Slave_IO_Running: Yes
+Slave_SQL_Running: Ye最近一直在研究mysql的主从同步问题，网上也有很多资料，现在感觉写的都很好(当初感觉写的很差，是因为自己的领悟较差)，于是想跟大家分享一下我配置的整个过程和经验。
+
+在这里先引入一篇文章，感觉写的很好，但对于第一次接触mysql主从同步人来说或许有点难理解：
+
+呵呵，其实我也算是第一次接触吧。
+
+环境：windows 7 ，mysql-5.5.18-win32.msi
+
+主服务器地址：192.168.1.192
+
+从数据库地址：192.168.1.193
+
+流程：
+
+</div>  
+</div>
+ <div class="fixediv1 fixediv">
+	<div class="con">
+		广告内容1<br>
+		相对于body,靠上面20，左边20
+	</div>
+	<a class="close" href="javascript:;">关闭广告</a>
+</div>
+	
+<script src="js/jquery.js"></script>
+<script src="js/jqfixed.js"></script>
+<script type="text/javascript">
+$(function(){
+	$.jqFixed({
+		obj:'.fixediv1'
+		, css:{
+			right : 20
+			, top : 120
+		}
+	})	
+})
+</script>
+<!--演示内容结束-->
+
+
+
+	<section class="wrap">
+		<div class="p10">
+			<script type="text/javascript">
+                var uyan_config = {
+                     'title':'jqfixed'
+                    , 'url':'http://www.jqduang.com/jqfixed'
+                    , 'du':'jqduang.com'
+                    , 'su':'jqfixed' 
+                };
+            </script>
+			<!-- UY BEGIN -->
+			<div id="uyan_frame"></div>
+			<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2026484"></script>
+			<!-- UY END -->
+		</div><!-- /留言 -->
+	</section> 
+
+<script src="../js/common.js?201505203"></script>
+
+<div class="footer tac">	    
+    jqDuang, jqValidate, jqModal, jqGallery, jqFixed, jqSimulation <br/>
+    Copyright ©2013 jqduang.com
+</div><!-- /footer -->
+<div class="dn">
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?b2e33c0312c7235a7e13b0cf86eec840";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</div>
+</body>
+</html>
