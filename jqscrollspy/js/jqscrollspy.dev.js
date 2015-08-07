@@ -6,42 +6,38 @@
  */
 !function ($) {
     var Scrollspy = function (self, opt) {
-        this.o         = $.extend({}, Duang.defaults, opt)
-        this.$self     = $(self)
+        this.o         = $.extend({}, Scrollspy.defaults, opt)
+        this.$cell     = $(self).find(this.o.cell)
     }
 
     Scrollspy.defaults = {
-        obj           : 'li'
-        , cell        : ''
-        , trigger     : 'mouseover' //click mouseover
-        , effect      : 'fade' //效果 fold left leftLoop
+        offset : 10
+        , cell : 'a'
     }
 
     Scrollspy.prototype = {
         init : function () {
-            var _this = this
-            , o       = _this.o
-            , $obj    = _this.$obj
-            , $objP   = $obj.parent()
-            , $objPP  = $objP.parent();
+            this.$cell.each($.proxy(function(i, el) {
+                this.aTop.push($(el.attr('href')).offset().top - this.o.offset);
+            }, this))
+            .on('click', function () {
+                $('body,html').animate({scrollTop: this.aTop[this.$cell.index(this)]});
+            });
+
+            var $win = $(window);
+
+            $win.on('scroll', function () {
+                var st = $win.scrollTop();
+                for (var i = 0; i < this.aTop.length; i++) {
+                    this.aTop[i] <= st && this.$cell.removeClass('act').eq(i).addClass('act');
+                };
+            })
 
         }
-        , start : function () {
-            this.t1 = setInterval($.proxy(this.next, this), this.o.interval);
-        }
-        , play : function (next) {
-            var _this  = this
-            , o        = _this.o
-            , $obj     = _this.$obj
-            , $objP    = $obj.parent()
-            , loopNext = _this.loopNext;
-
-        }
-
     }
 
     function Plugin(option) {
-        return option == 'index' ? this.data('jqScrollspy').index : this.each(function () {
+        return this.each(function () {
             var $this   = $(this)
             var data    = $this.data('jqScrollspy')
             var options = typeof option == 'object' && option
