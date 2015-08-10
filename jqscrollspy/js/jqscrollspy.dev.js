@@ -2,16 +2,17 @@
 * author : ahuing
 * date   : 2015-8-7
 * name   : jqscrollspy v1.0
-* modify : 2015-8-10 10:13:06
+* modify : 2015-8-10 14:43:10
  */
 !function ($) {
     var Scrollspy = function (self, opt) {
-        this.o         = $.extend({}, Scrollspy.defaults, opt)
-        this.$cell     = $(self).find('a')
+        this.o     = $.extend({}, Scrollspy.defaults, opt)
+        this.$cell = $(self).find(this.o.obj)
     }
 
     Scrollspy.defaults = {
         offset : 10
+        , obj : 'a'
     }
 
     Scrollspy.prototype = {
@@ -21,28 +22,30 @@
             , wH      = $win.height()
             , bH      = $('html').height()
             , ScrollTo = function () {
-                var st = $win.scrollTop(), iIndex = -1;
-                if (bH - wH != st) {
+                var st = $win.scrollTop() + _this.o.offset, iIndex;
+
+                if (st < bH - wH) {
                     for (var i = 0; i < _this.aTop.length; i++) {
-                        _this.aTop[i] <= st && (iIndex = i);
+                        st >= _this.aTop[i] && _this.aTop[i] > 0 && (iIndex = i);
                     };
                 }
+                else iIndex = -1;
+
                 _this.$cell.removeClass('act').eq(iIndex).addClass('act');
             }
 
             _this.aTop = [];
             _this.$cell.each(function(i, el) {
-                _this.aTop.push($(el.href.replace(el.baseURI, '')).offset().top - _this.o.offset);
+                _this.aTop.push($($(el).attr('href')).offset().top);
             })
             .on('click', function () {
-                $('body,html').animate({scrollTop: _this.aTop[_this.$cell.index(this)]});
+                $('body,html').animate({scrollTop: _this.aTop[_this.$cell.index(this)] - _this.o.offset});
                 return false;
             });
 
+            if (_this.aTop.length < 2) return;
             ScrollTo();
-
             $win.on('scroll', ScrollTo);
-
         }
     }
 
