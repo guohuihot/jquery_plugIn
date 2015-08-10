@@ -2,7 +2,7 @@
 * author : ahuing
 * date   : 2015-8-7
 * name   : jqscrollspy v1.0
-* modify : 2015-8-10 09:47:40
+* modify : 2015-8-10 10:13:06
  */
 !function ($) {
     var Scrollspy = function (self, opt) {
@@ -21,15 +21,13 @@
             , wH      = $win.height()
             , bH      = $('html').height()
             , ScrollTo = function () {
-                var st = $win.scrollTop();
-                if (bH - wH == st) {
-                    _this.$cell.removeClass('act').eq(-1).addClass('act');
-                }
-                else {
+                var st = $win.scrollTop(), iIndex = -1;
+                if (bH - wH != st) {
                     for (var i = 0; i < _this.aTop.length; i++) {
-                        _this.aTop[i] <= st && _this.$cell.removeClass('act').eq(i).addClass('act');
+                        _this.aTop[i] <= st && (iIndex = i);
                     };
                 }
+                _this.$cell.removeClass('act').eq(iIndex).addClass('act');
             }
 
             _this.aTop = [];
@@ -37,7 +35,8 @@
                 _this.aTop.push($(el.href.replace(el.baseURI, '')).offset().top - _this.o.offset);
             })
             .on('click', function () {
-                $('body,html').animate({scrollTop: _this.aTop[_this.$cell.index(this)]}, 'fast');
+                $('body,html').animate({scrollTop: _this.aTop[_this.$cell.index(this)]});
+                return false;
             });
 
             ScrollTo();
