@@ -1,44 +1,82 @@
-// custom
+/**
+* author : ahuing
+* date   : 2015-8-7
+* name   : jqscrollspy v1.0
+* modify : 2015-8-10 14:43:10
+ */
 !function ($) {
-	//fixed
-	$.extend({
-		isIE6: function() {
-			return !-[1, ] && !window.XMLHttpRequest;
-		},
-		getZindex: function() {
-			return parseInt(new Date().getTime() / 1e3);
-		},
-		jqFixed: function(fixedOpt) {
+    var Scrollspy = function (self, opt) {
+        this.o     = $.extend({}, Scrollspy.defaults, opt)
+        this.$cell = $(self).find(this.o.obj)
+    }
 
-			if ($(fixedOpt.obj).length) var $obj = $(fixedOpt.obj);
-			else return;
-			var ie6 = $.isIE6(),
-				pos = ie6 ? "absolute" : "fixed",
-				$w = $(window),
-				o = $.extend(true, {
-					type: 1,
-					css: {
-						position: "absolute",
-						display: "block"
-					},
-					top: 0
-				}, fixedOpt);
-			if (o.css.bottom >= 0) o.css.top = $w.height() - o.css.bottom - $obj.outerHeight();
-			if (ie6 && o.type) o.css.top += $w.scrollTop();
-			$obj.css(o.css);
-			var T = $obj.offset().top;
-			if (ie6 && o.type) T -= $w.scrollTop();
-			if (o.top) $obj.css("display", "none");
-			$w.on("scroll", function() {
-				var st = $w.scrollTop(),
-					c = st >= o.top;
-				$obj.css({
-					display: c ? "block" : "none",
-					position: st > T ? pos : o.type ? pos : "absolute",
-					top: ie6 ? o.type ? T + st : st > T ? st : T : st > T ? o.type ? T : 0 : T
-				})[c ? 'addClass' : 'removeClass']('j-fixed');
-			});
-			return $obj;
-		}
-	})
+    Scrollspy.defaults = {
+        offset : 10
+        , obj : 'a'
+    }
+
+    Scrollspy.prototype = {
+        init : function () {
+            var _this = this
+            , $win    = $(window)
+            , wH      = $win.height()
+            , bH      = $('body').height()
+            , ScrollTo = function () {
+                var st = $win.scrollTop() + _this.o.offset, iIndex;
+
+                if (st < bH - wH) {
+                    for (var i = 0; i < _this.aTop.length; i++) {
+                        st >= _this.aTop[i] && _this.aTop[i] > 0 && (iIndex = i);
+                    };
+                }
+                else iIndex = -1;
+
+                _this.$cell.removeClass('act').eq(iIndex).addClass('act');
+            }
+
+            _this.aTop = [];
+            _this.$cell.each(function(i, el) {
+                _this.aTop.push($($(el).attr('href')).offset().top);
+            })
+            .on('click', function () {
+                $('body,html').animate({scrollTop: _this.aTop[_this.$cell.index(this)] - _this.o.offset});
+                return false;
+            });
+
+            if (_this.aTop.length < 2) return;
+            ScrollTo();
+            $win.on('scroll', ScrollTo);
+        }
+    }
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this)
+            var data    = $this.data('jqScrollspy')
+            var options = typeof option == 'object' && option
+
+            if (!data) {
+                $this.data('jqScrollspy', (data = new Scrollspy(this, options)));
+                data.init();
+            }
+
+        })
+    }
+
+    var old = $.fn.jqScrollspy;
+
+    $.fn.jqScrollspy             = Plugin
+    $.fn.jqScrollspy.Constructor = Scrollspy;
+
+    $.fn.jqScrollspy.noConflict = function () {
+        $.fn.jqScrollspy = old
+        return this
+    }
+
+    $(window).on('load', function () {
+        $('.jqScrollspy').each(function() {
+            var $this = $(this);
+            Plugin.call($this, $this.data())
+        });
+    })
 }(jQuery);
