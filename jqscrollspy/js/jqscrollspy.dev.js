@@ -2,36 +2,47 @@
 * author : ahuing
 * date   : 2015-8-7
 * name   : jqscrollspy v1.0
-* modify : 2015-8-7 15:06:03
+* modify : 2015-8-10 09:47:40
  */
 !function ($) {
     var Scrollspy = function (self, opt) {
         this.o         = $.extend({}, Scrollspy.defaults, opt)
-        this.$cell     = $(self).find(this.o.cell)
+        this.$cell     = $(self).find('a')
     }
 
     Scrollspy.defaults = {
         offset : 10
-        , cell : 'a'
     }
 
     Scrollspy.prototype = {
         init : function () {
-            this.$cell.each($.proxy(function(i, el) {
-                this.aTop.push($(el.attr('href')).offset().top - this.o.offset);
-            }, this))
+            var _this = this
+            , $win    = $(window)
+            , wH      = $win.height()
+            , bH      = $('html').height()
+            , ScrollTo = function () {
+                var st = $win.scrollTop();
+                if (bH - wH == st) {
+                    _this.$cell.removeClass('act').eq(-1).addClass('act');
+                }
+                else {
+                    for (var i = 0; i < _this.aTop.length; i++) {
+                        _this.aTop[i] <= st && _this.$cell.removeClass('act').eq(i).addClass('act');
+                    };
+                }
+            }
+
+            _this.aTop = [];
+            _this.$cell.each(function(i, el) {
+                _this.aTop.push($(el.href.replace(el.baseURI, '')).offset().top - _this.o.offset);
+            })
             .on('click', function () {
-                $('body,html').animate({scrollTop: this.aTop[this.$cell.index(this)]});
+                $('body,html').animate({scrollTop: _this.aTop[_this.$cell.index(this)]}, 'fast');
             });
 
-            var $win = $(window);
+            ScrollTo();
 
-            $win.on('scroll', function () {
-                var st = $win.scrollTop();
-                for (var i = 0; i < this.aTop.length; i++) {
-                    this.aTop[i] <= st && this.$cell.removeClass('act').eq(i).addClass('act');
-                };
-            })
+            $win.on('scroll', ScrollTo);
 
         }
     }
@@ -47,8 +58,6 @@
                 data.init();
             }
 
-            if (typeof option == 'string') data[option]()
-            else if(typeof option == 'number') data.play(data.loopNext = option)
         })
     }
 
@@ -57,7 +66,7 @@
     $.fn.jqScrollspy             = Plugin
     $.fn.jqScrollspy.Constructor = Scrollspy;
 
-    $.fn.jqDuang.noConflict = function () {
+    $.fn.jqScrollspy.noConflict = function () {
         $.fn.jqScrollspy = old
         return this
     }
