@@ -11,13 +11,12 @@
     }
 
     Fixed.defaults = {
-        css    : {
+        css : {
             top: 0
-            // , right : 10
-            // , display: 'none'
+            // , marginTop: 0
             , zIndex: parseInt(new Date().getTime() / 1e3)
         }
-        , top : 0
+        , fixed : 0
         , bottom : 0
         , close : '.btn-close'
     }
@@ -33,46 +32,45 @@
             , bH      = $('body').height()
             , pos     = isIE6 ? 'absolute' : 'fixed'
             , o       = _this.o
-            , t       = o.top || _this.$self.offset().top
-            , h       = _this.$self.outerHeight(true)
-            , _t = 0;
-
+            , oH      = _this.$self.outerHeight(true)
+            , t       = 0
+            , fixedO  = o;
+            // 获取position
             o.css.position = o.css.position || _this.$self.css('position');
 
-            if (o.css.position != 'fixed') {
-                $('<div style="height:' + h + 'px"></div>').insertBefore(_this.$self);
-                o.css.marginTop = -h;
+            if (o.css.position == 'fixed' || o.css.position == 'absolute') {
+                o.css.marginTop = o.css.marginTop || parseInt(_this.$self.css('margin-top')) || o.css.top || o.css.bottom && (wH - o.css.bottom - oH) || parseInt(_this.$self.css('top'));
+                o.css.top = 0;
+                isIE6 && (o.css.position = 'absolute')
+            }
+            else {
+                $('<div style="height:' + oH + 'px"></div>').insertBefore(_this.$self);
+                o.css.marginTop = -oH;
             } 
-
+            // 点击关闭
             _this.$self.find(o.close).click(function () {
                 _this.$self.css('display', 'none');
-                $win.off('scroll.fixed')
+                $win.off('scroll.fixed');
             });
-
-            o.css.width = _this.$self.width();
-            if (o.css.bottom >= 0) {
-                o.css.top = wH - o.css.bottom - h;
-                o.css.bottom = 'auto'
-            };
+            // 设置对象的宽
+            o.css.width = o.css.width || _this.$self.width();
+            // 设置初始状态
             _this.$self.css(o.css);
-
+            o.fixed = o.fixed || _this.$self.offset().top;
             $win.on('scroll.fixed', function() {
-                var st = $win.scrollTop() + (!o.top && o.css.top || 0);
-                _this.$self
-                .css(st >= t && 
-                    {
+                var st = $win.scrollTop();
+                _this.$self.css(st >= o.fixed && {
                         position: pos
                         , display: 'block'
-                        , top: !isIE6 ? 0 : st
-                        , marginTop: o.css.top
-                    } || 
-                    o.css)
+                        , top: isIE6 ? st : 0
+                        , marginTop: (o.css.bottom || o.css.position == 'fixed') ? o.css.marginTop * 1 : 0
+                    } || o.css);
 
-                st > t && 
-                _this.$self.trigger('fixed').trigger(st > _t ? 'scrollUp' : 'scrollDown') ||
+                st > o.fixed && 
+                _this.$self.trigger('fixed').trigger(st > t ? 'scrollUp' : 'scrollDown') ||
                 _this.$self.trigger('unfixed');
 
-                setTimeout(function () {_t = st}, 0)
+                setTimeout(function () {t = st}, 0)
             })
         }
     }
