@@ -2,7 +2,7 @@
 * author : ahuing
 * date   : 2015-8-7
 * name   : jqscrollspy v1.0
-* modify : 2015-8-12 13:41:29
+* modify : 2015-8-12 15:17:32
  */
 !function ($) {
     var Scrollspy = function (self, opt) {
@@ -21,9 +21,9 @@
             , $win    = $(window)
             , wH      = $win.height()
             , bH      = $('body').height()
+            , hasCls  = _this.$cell.eq(0).hasClass('act')
             , ScrollTo = function () {
-                var st = $win.scrollTop() + _this.o.offset, iIndex;
-
+                var st = $win.scrollTop() + _this.o.offset, iIndex = hasCls ? 0 : undefined;
                 if (st < bH - wH) {
                     for (var i = 0; i < _this.aTop.length; i++) {
                         st >= _this.aTop[i] && _this.aTop[i] > 0 && (iIndex = i);
