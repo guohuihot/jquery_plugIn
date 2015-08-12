@@ -2,7 +2,7 @@
 * author : ahuing
 * date   : 2015-8-7
 * name   : jqfixed v1.0
-* modify : 2015-8-11 15:42:35
+* modify : 2015-8-12 10:58:54
  */
 !function ($) {
     var Fixed = function (self, opt) {
@@ -18,7 +18,7 @@
             , zIndex: parseInt(new Date().getTime() / 1e3)
         }
         , top : 0
-        , bottom : 360
+        , bottom : 0
         , close : '.btn-close'
     }
 
@@ -31,19 +31,16 @@
             , isIE6   = !-[1, ] && !window.XMLHttpRequest
             , wH      = $win.height()
             , bH      = $('body').height()
-            , pos     = isIE6 ? "absolute" : "fixed"
+            , pos     = isIE6 ? 'absolute' : 'fixed'
             , o       = _this.o
             , t       = o.top || _this.$self.offset().top
             , h       = _this.$self.outerHeight(true)
-            , _t = 0
-            , timer;
+            , _t = 0;
 
             o.css.position = o.css.position || _this.$self.css('position');
 
-            if (o.css.position != 'absolute') {
-                $('<div></div>').insertBefore(_this.$self).css({
-                    height: h
-                });
+            if (o.css.position != 'fixed') {
+                $('<div style="height:' + h + 'px"></div>').insertBefore(_this.$self);
                 o.css.marginTop = -h;
             } 
 
@@ -54,27 +51,29 @@
 
             o.css.width = _this.$self.width();
             if (o.css.bottom >= 0) {
-                o.css.top = wH - o.css.bottom - h
+                o.css.top = wH - o.css.bottom - h;
                 o.css.bottom = 'auto'
             };
             _this.$self.css(o.css);
 
             $win.on('scroll.fixed', function() {
-                clearTimeout(timer);
-                timer = setTimeout(function () {
-                    var st = $win.scrollTop() + (!o.top && o.css.top || 0);
-                    _this.$self
-                    .css(st >= t && {
+                var st = $win.scrollTop() + (!o.top && o.css.top || 0);
+                _this.$self
+                .css(st >= t && 
+                    {
                         position: pos
                         , display: 'block'
-                        , marginTop: 0
-                    } || o.css)
-                    .trigger(st > _t ? 'scrollUp' : 'scrollDown')
-                    .trigger(st > t ? 'fixed' : 'unfixed');
+                        , top: !isIE6 ? 0 : st
+                        , marginTop: o.css.top
+                    } || 
+                    o.css)
 
-                    _t = st;
-                }, 10)
-            });
+                st > t && 
+                _this.$self.trigger('fixed').trigger(st > _t ? 'scrollUp' : 'scrollDown') ||
+                _this.$self.trigger('unfixed');
+
+                setTimeout(function () {_t = st}, 0)
+            })
         }
     }
 
